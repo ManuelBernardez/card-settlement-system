@@ -1,0 +1,13 @@
+# Ignorar archivos locales
+.vs/
+.vscode/
+bin/
+obj/
+*.user
+*.suo
+
+# Ignorar configuraciones sensibles
+db.php
+
+
+
