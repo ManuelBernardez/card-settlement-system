@@ -12,93 +12,7 @@ Este sistema simula el circuito de administración y consulta de tarjetas de cr�
 - **Aplicación administrativa (C#)**: usada por los empleados de la entidad financiera para la gestión de clientes, tarjetas y liquidaciones. 
 - **Portal web (PHP)**, donde los clientes pueden registrarse e iniciar sesión en el home banking (si ya tienen tarjeta),  para consultar información sobre sus liquidaciones.
 
-**Base de Datos**: La aplicación utiliza una base de datos compartida por ambos sistemas.
-
-Tablas:
-    * usuarios
-    * tarjetas
-    * liquidaciones
-
-Este proyecto tiene como objetivo aplicar conceptos de:
-
-* Programación Orientada a Objetos
-* Acceso a Bases de Datos
-* Integración entre plataformas
-* Arquitectura Cliente-Servidor
-* Manejo de sesiones en PHP
-
----
-
-## Funcionalidades
-
-### Aplicación de Consola (C#)
-
-- Registrar clientes.
-- Emitir tarjetas.
-- Consultar de clientes y tarjetas emitidas.
-- Dar de baja tarjetas.
-- Generar liquidaciones.
-
-### Portal Web (PHP)
-
-- Activar cuenta web del usuario.
-- Iniciar sesión.
-- Consultar datos personales e historial de liquidaciones.
-- Cerrar sesión.
-
-## Validaciones
-
-- Documento obligatorio.
-- Verificación de existencia de tarjeta para activar la cuenta web.
-- Prevención de múltiples tarjetas para un mismo titular.
-- Prevención de números de tarjeta duplicados.
-- Validación del formato del período de liquidación.
-- Validación del total a pagar.
-- Verificación del estado de la tarjeta antes de emitir liquidaciones.
-- Uso de consultas preparadas (`Prepared Statements`) para todas las operaciones SQL.
-
----
-
-## Tecnologías
-
-| Tecnología      | Uso                   |
-| --------------- | --------------------- |
-| C#              | Aplicación de consola |
-| PHP             | Portal Web            |
-| MySQL           | Base de datos         |
-| HTML5           | Interfaces            |
-| Tailwind CSS    | Diseño web            |
-| Git             | Control de versiones  |
-
-
-
-## Estructura del proyecto
-
-```text
-mis-tarjetas/
-├── /docs     
-├── /database
-│   ├── mi_banco_db.sql     
-│   └── db.php
-│
-├── /src
-│   ├── /admin-console  # Aplicación C#
-│   │   ├── Program.cs  
-│   │   └── ConexionBD.cs
-│   │
-│   └── /web-portal     # Aplicación PHP
-│       ├── registro.html
-│       ├── ingreso.php
-│       ├── resumen.php
-│       ├── altas.php
-│       ├── alertas.php
-│       ├── registro.html
-│       └── ingreso.html
-├── .gitignore
-└── README.md
-```
-
----
+**Base de Datos**: La aplicación utiliza una base de datos compartida por ambos sistemas. Tablas de usuarios, tarjetas y liquidaciones
 
 ## Requisitos
 
@@ -124,6 +38,78 @@ http://localhost/mis_tarjetas_tp/src/web_portal/ingreso.html
 ```bash
 dotnet run
 ```
+
+
+## Funcionalidades
+
+### Aplicación de Consola (C#)
+
+- Registrar clientes.
+- Emitir tarjetas.
+- Consultar de clientes y tarjetas emitidas.
+- Dar de baja tarjetas.
+- Generar liquidaciones.
+
+### Portal Web (PHP)
+
+- Activar cuenta web del usuario.
+- Iniciar sesión.
+- Consultar datos personales e historial de liquidaciones.
+- Cerrar sesión.
+
+## Reglas de negocio
+
+**Validaciones**
+
+- Documento obligatorio y tipo de documento válido.
+- Existencia del cliente en el sistema.
+- Credenciales de acceso al portal web.
+- Banco emisor válido.
+- Estado de la tarjeta antes de emitir liquidaciones.
+- Formato del período de liquidación.
+- Total a pagar válido.
+
+**Prevención de duplicados**
+
+- Números de tarjeta duplicados.
+- Múltiples tarjetas para un mismo titular.
+- Usuarios en la página web.
+
+**Otros controles de seguridad**
+
+- Manejo de sesiones de usuario en el portal web.
+- Uso de consultas preparadas (Prepared Statements) en todas las operaciones SQL.
+
+
+## Estructura del proyecto
+
+```text
+mis_tarjetas_tp/
+├── database/
+│   ├── mi_banco_db.sql
+│   └── db.php
+│
+├── src/
+│   ├── admin_consola/
+│   │   ├── Program.cs
+│   │   ├── ConexionBD.cs
+│   │   └── Validacion.cs
+│   │
+│   ├── web_portal/
+│   │   ├── ingreso.html
+│   │   ├── registro.html
+│   │   ├── ingreso.php
+│   │   ├── altas.php
+│   │   ├── resumen.php
+│   │   ├── cerrar.php
+│   │   ├── alertas.php
+│   │   └── validacion.php
+│   │
+│   └── docs/
+├── .gitignore
+└── README.md
+```
+
 
 ## Autor
 

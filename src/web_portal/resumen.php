@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once "../../database/db.php";
-require_once "../alertas.php";
+require_once "alertas.php";
 
 // Se requiere una sesión válida activa
 if (!isset($_SESSION['documento']) || empty($_SESSION['documento'])) {
@@ -54,9 +54,7 @@ function obtenerLiquidaciones($conexion, $numCuenta)
 $user = obtenerUsuario($conexion, $documento);
 
 if (!$user || !isset($user['num_cuenta'])) {
-    echo "<script>alert('No se encontró el usuario o no tiene tarjeta asociada')
-    ;window.location='ingreso.html';</script>";
-    exit();
+    mostrarAlerta('No se encontró el usuario o no tiene tarjeta asociada');
 }
 
 $liq = obtenerLiquidaciones($conexion, $user['num_cuenta']);

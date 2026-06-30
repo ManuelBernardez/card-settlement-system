@@ -1,18 +1,13 @@
 <?php
 session_start();
 require_once "../../database/db.php";
-require_once "../alertas.php";
+require_once "alertas.php";
+require_once "validacion.php";
 
 $usuario = $_POST['usuario'] ?? null;
 $password = $_POST['password'] ?? null;
 
-if (!$usuario || !$password) {
-    echo "<script>alert('Datos incompletos')
-    ;window.location='ingreso.html';</script>";
-    exit();
-}
-
-// Validar login
+// Validar e iniciar sesión
 function obtenerUsuarioPorLogin($conexion, $usuario, $password)
 {
     $sql = "
@@ -34,18 +29,15 @@ function obtenerUsuarioPorLogin($conexion, $usuario, $password)
 }
 
 
-// LOGIN
 $user = obtenerUsuarioPorLogin($conexion, $usuario, $password);
 
 if (!$user) {
     mostrarAlerta('Usuario o contraseña incorrectos');    
 }
 
-//Verificación de activación
+// Verificar cuenta activa (cliente registrado BD mediante admin de C#)
 if ($user['usuario'] === null || $user['password'] === null) {
-    echo "<script>alert('Cuenta no activada')
-    ;window.location='ingreso.html';</script>";
-    exit();
+    mostrarAlerta('Cuenta no activada');     
 }
 
 // Crear sesión y redirigir al resumen
