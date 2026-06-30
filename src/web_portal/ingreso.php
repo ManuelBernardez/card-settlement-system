@@ -1,30 +1,60 @@
 <?php
 session_start();
-require_once "config/db.php";
+require_once "../../database/db.php";
+require_once "../alertas.php";
 
-$usuario = $_POST['usuario'];
-$password = $_POST['password'];
+$usuario = $_POST['usuario'] ?? null;
+$password = $_POST['password'] ?? null;
 
-$sql = "SELECT * FROM usuarios WHERE usuario = ? AND password = ?";
-$stmt = $conexion->prepare($sql);
-$stmt->bind_param("ss", $usuario, $password);
-$stmt->execute();
-
-$result = $stmt->get_result();
-
-if ($result->num_rows == 1) {
-    $user = $result->fetch_assoc();
-
-    if ($user['usuario'] == null || $user['password'] == null) {
-        echo "Cuenta no activada";
-        exit();
-    }
-
-    $_SESSION['documento'] = $user['documento'];
-    $_SESSION['usuario'] = $user['usuario'];
-
-    header("Location: resumen.php");
+if (!$usuario || !$password) {
+    echo "<script>alert('Datos incompletos')
+    ;window.location='ingreso.html';</script>";
     exit();
-} else {
-    echo "Usuario o contraseña incorrectos";
 }
+
+// Validar login
+function obtenerUsuarioPorLogin($conexion, $usuario, $password)
+{
+    $sql = "
+        SELECT documento, usuario, password
+        FROM usuarios
+        WHERE usuario = ? AND password = ?
+    ";
+
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("ss", $usuario, $password);
+    $stmt->execute();
+
+    $resultado = $stmt->get_result();
+    $user = $resultado->fetch_assoc();
+
+    $stmt->close();
+
+    return $user;
+}
+
+
+// LOGIN
+$user = obtenerUsuarioPorLogin($conexion, $usuario, $password);
+
+if (!$user) {
+    mostrarAlerta('Usuario o contraseña incorrectos');    
+}
+
+//Verificación de activación
+if ($user['usuario'] === null || $user['password'] === null) {
+    echo "<script>alert('Cuenta no activada')
+    ;window.location='ingreso.html';</script>";
+    exit();
+}
+
+// Crear sesión y redirigir al resumen
+$_SESSION['documento'] = $user['documento'];
+$_SESSION['usuario'] = $user['usuario'];
+
+$stmt = null;
+$conexion->close();
+
+header("Location: resumen.php");
+exit();
+?>

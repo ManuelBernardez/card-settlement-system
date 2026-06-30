@@ -1,21 +1,23 @@
-# 💳 Sistema de Consulta de Liquidaciones "Mis Tarjetas"
+# Sistema de Consulta de Liquidaciones "Mis Tarjetas"
 
 > Trabajo Práctico Integrador - Programación III
-> Tecnicatura Universitaria en Programación
-> Universidad Tecnológica Nacional
+> 
+> Tecnicatura Universitaria en Programación | Universidad Tecnológica Nacional
 
----
 
-## 📖 Descripción
+## Descripción
 
-Este sistema simula el circuito básico de administración y consulta de tarjetas de crédito.
+Este sistema simula el circuito de administración y consulta de tarjetas de crédito mediante dos aplicaciones integradas:
 
-El proyecto está compuesto por dos aplicaciones independientes que comparten una base de datos MySQL:
+- **Aplicación administrativa (C#)**: usada por los empleados de la entidad financiera para la gestión de clientes, tarjetas y liquidaciones. 
+- **Portal web (PHP)**, donde los clientes pueden registrarse e iniciar sesión en el home banking (si ya tienen tarjeta),  para consultar información sobre sus liquidaciones.
 
-* **Aplicación de consola desarrollada en C#**, usada por los empleados de la entidad financiera para administrar clientes, tarjetas y liquidaciones.
-* **Portal web desarrollado en PHP**, donde los clientes pueden activar su cuenta, iniciar sesión y consultar sus liquidaciones.
+**Base de Datos**: La aplicación utiliza una base de datos compartida por ambos sistemas.
 
----
+Tablas:
+    * usuarios
+    * tarjetas
+    * liquidaciones
 
 Este proyecto tiene como objetivo aplicar conceptos de:
 
@@ -27,7 +29,37 @@ Este proyecto tiene como objetivo aplicar conceptos de:
 
 ---
 
-## 🛠 Tecnologías
+## Funcionalidades
+
+### Aplicación de Consola (C#)
+
+- Registrar clientes.
+- Emitir tarjetas.
+- Consultar de clientes y tarjetas emitidas.
+- Dar de baja tarjetas.
+- Generar liquidaciones.
+
+### Portal Web (PHP)
+
+- Activar cuenta web del usuario.
+- Iniciar sesión.
+- Consultar datos personales e historial de liquidaciones.
+- Cerrar sesión.
+
+## Validaciones
+
+- Documento obligatorio.
+- Verificación de existencia de tarjeta para activar la cuenta web.
+- Prevención de múltiples tarjetas para un mismo titular.
+- Prevención de números de tarjeta duplicados.
+- Validación del formato del período de liquidación.
+- Validación del total a pagar.
+- Verificación del estado de la tarjeta antes de emitir liquidaciones.
+- Uso de consultas preparadas (`Prepared Statements`) para todas las operaciones SQL.
+
+---
+
+## Tecnologías
 
 | Tecnología      | Uso                   |
 | --------------- | --------------------- |
@@ -38,61 +70,60 @@ Este proyecto tiene como objetivo aplicar conceptos de:
 | Tailwind CSS    | Diseño web            |
 | Git             | Control de versiones  |
 
----
 
 
 ## Estructura del proyecto
 
 ```text
 mis-tarjetas/
-
-├── /docs              
-├── /database           
+├── /docs     
+├── /database
+│   ├── mi_banco_db.sql     
+│   └── db.php
+│
 ├── /src
-│   ├── /admin-console  # Proyecto C#
-│   │   ├── Config.cs
-│   │   └── Program.cs  
-│   └── /web-portal     # Proyecto PHP
-│       ├── ingreso.html
+│   ├── /admin-console  # Aplicación C#
+│   │   ├── Program.cs  
+│   │   └── ConexionBD.cs
+│   │
+│   └── /web-portal     # Aplicación PHP
 │       ├── registro.html
+│       ├── ingreso.php
+│       ├── resumen.php
+│       ├── altas.php
+│       ├── alertas.php
+│       ├── registro.html
+│       └── ingreso.html
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-## ⚙️ Funcionalidades
+## Requisitos
 
-### Aplicación de Consola (C#)
+- PHP 8
+- .NET SDK 8 o superior
+- XAMPP (Apache + MySQL)
+- MySQL Connector para .NET
 
-* Registrar clientes.
-* Emitir tarjetas.
-* Consultar información.
-* Dar de baja tarjetas.
-* Generar liquidaciones.
 
-### Portal Web (PHP)
+## Ejecución
 
-* Activar usuario.
-* Iniciar sesión.
-* Consultar última liquidación.
-* Consultar historial.
-* Cerrar sesión.
+1. Importar `mi_banco_db.sql` en phpMyAdmin  
+2. Copiar proyecto en `htdocs`  
+3. Iniciar XAMPP (Apache + MySQL)  
+4. Abrir:
 
----
+```
+http://localhost/mis_tarjetas_tp/src/web_portal/ingreso.html
+```
 
-## 🗄 Base de Datos
+5. Ejecutar consola:
 
-La aplicación utiliza una única base de datos compartida por ambos sistemas.
-
-Tablas principales:
-
-* usuarios
-* tarjetas
-* liquidaciones
-
----
-
+```bash
+dotnet run
+```
 
 ## Autor
 
